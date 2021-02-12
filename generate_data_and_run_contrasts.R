@@ -1365,7 +1365,7 @@
   
   # globals
   trialNum = 1
-  numDataSets = 2
+  numDataSets = 1000
   randomSeed = 1
   infoFileWritten = FALSE # new info file for every testType x Design
   warningCt = 0 # number of times we get a warning
@@ -1379,8 +1379,7 @@
   doubleExponentialDistrs = c(50,51,150,151)
   
   # NOTE no 21 or 121 because exponential only has one param
-  #testTypes = c(normalDistrs,logNormalDistrs,exponentialDistrs,cauchyDistrs,threeDfTDistrs,doubleExponentialDistrs)
-  testTypes = c(30,132)
+  testTypes = c(normalDistrs,logNormalDistrs,exponentialDistrs,cauchyDistrs,threeDfTDistrs,doubleExponentialDistrs)
   testType = 0 # make explicitly global since running inside function now
   # Second arg doesn't matter. we're not doing ordered contrasts.
   options(contrasts=c("contr.sum", "contr.sum"))
