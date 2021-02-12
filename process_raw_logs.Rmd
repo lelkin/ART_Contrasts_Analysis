@@ -18,7 +18,7 @@ save_all_logs = FALSE
 # indicates whether to save the results as a csv
 save_results = FALSE
 # directory log files are in, relative to working directory
-dir_name = "./1000_logs/Final_Used"
+dir_name = "./raw_logs"
 ```
 
 Each combination of: distribution type, design, and between/within has its own set of log files: a meta log file and a results log file.
@@ -148,6 +148,6 @@ If saving results into a file to be loaded by data viz notebook.
 ```{r save results, eval=FALSE}
 if(save_results){
   # Name file res_ults so it doesn't get picked up in future iterations of running this notebook when we search for files with "results.csv" in them.
-  write.csv(df_results, paste(dir_name, "/res_ults.csv", sep=""))
+  write.csv(df_results, paste(dir_name, "./res_ults.csv", sep=""))
 }
 ```

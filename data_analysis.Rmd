@@ -93,7 +93,7 @@ theme =
 # Setup
 We start by reading in the data and making all factors factors. Each row has the proportion of significant results over all trials for a single design.
 ```{r read data}
-dir_name = "./1000_logs/Final_Used"
+dir_name = "./raw_logs"
 # yes, i named my results file res_ults to not conflict with logs with results at the "trial" level. don't judge me.
 df = read.csv(paste(dir_name, "/res_ults.csv", sep=""))
 
