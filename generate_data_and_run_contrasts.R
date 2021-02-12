@@ -11,8 +11,7 @@
   library(nimble)
   library(broom)
   library(hash)
-  library(lplyr)
-  
+  #library(ARTool)
   
   source("artcon_draft.R")
   
@@ -682,7 +681,13 @@
     
     # if within subjects, want SDsOf and SDsProp at end
     if(!between){
-      metaLogRow = metaLogRow %>% plyr::mutate(tempOffsetSd = offsetSd, tempOffsetProp = offsetProp, offsetSd = NULL, offsetProp = NULL) %>% lplyr::rename(offsetSd = tempOffsetSd, offsetProp = tempOffsetProp)
+      # metaLogRow is a list
+      #metaLogRow = metaLogRow %>% plyr::mutate(tempOffsetSd = offsetSd, tempOffsetProp = offsetProp, offsetSd = NULL, offsetProp = NULL) %>% lplyr::rename(offsetSd = tempOffsetSd, offsetProp = tempOffsetProp)
+      tempOffsetSd = metaLogRow[["offsetSd"]]
+      tempOffsetProp = metaLogRow$offsetProp
+      
+      metaLogRow = metaLogRow %>% plyr::mutate(offsetSd = NULL, offsetProp = NULL)
+      metaLogRow = c(metaLogRow, offsetSd = tempOffsetSd, offsetProp = tempOffsetProp)
     }
     
     # log metaRow
@@ -1360,7 +1365,7 @@
   
   # globals
   trialNum = 1
-  numDataSets = 1000
+  numDataSets = 2
   randomSeed = 1
   infoFileWritten = FALSE # new info file for every testType x Design
   warningCt = 0 # number of times we get a warning
@@ -1374,7 +1379,8 @@
   doubleExponentialDistrs = c(50,51,150,151)
   
   # NOTE no 21 or 121 because exponential only has one param
-  testTypes = c(normalDistrs,logNormalDistrs,exponentialDistrs,cauchyDistrs,threeDfTDistrs,doubleExponentialDistrs)
+  #testTypes = c(normalDistrs,logNormalDistrs,exponentialDistrs,cauchyDistrs,threeDfTDistrs,doubleExponentialDistrs)
+  testTypes = c(30,132)
   testType = 0 # make explicitly global since running inside function now
   # Second arg doesn't matter. we're not doing ordered contrasts.
   options(contrasts=c("contr.sum", "contr.sum"))

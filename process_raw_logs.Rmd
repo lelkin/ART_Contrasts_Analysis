@@ -1,0 +1,153 @@
+---
+title: "ART-C Raw Trials to Per-Design Results"
+output: html_document
+---
+
+Normal setup and setting up some global flags.
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(stringr)
+```
+
+```{r globalc, eval=FALSE}
+# indicates whether we load logs from saved all_logs file or read them in (i.e. whether or not to execute the first 2 chunks) 
+load_from_saved = FALSE
+# indicates whether to save out log file generated from combing all logs together
+save_all_logs = FALSE
+# indicates whether to save the results as a csv
+save_results = FALSE
+# directory log files are in, relative to working directory
+dir_name = "./1000_logs/Final_Used"
+```
+
+Each combination of: distribution type, design, and between/within has its own set of log files: a meta log file and a results log file.
+A single line in the results log file contains the result of one trial.
+The meta log file has one line per data set in the corresponding results file. Among other things, the meta log file indicates which data sets produced errors when using the ART-C method (which is a common problem when using lmer, which is what ART-C uses behind the scenes).
+
+Our first step is to identify and load all results log files and meta log files.
+```{r find logs, eval=FALSE}
+if(!load_from_saved){
+  # gets all csv files in dir_name recursively (ie no matter how nested)
+  all_logs = list.files(path = dir_name, pattern = "*.csv", recursive = TRUE, full.names = TRUE)
+  
+  # get result log files in all_logs
+  results_logs_filter = sapply(all_logs, function(x) grepl("results", x, fixed = TRUE))
+  results_logs = all_logs[results_logs_filter]
+  
+  # get meta log files in all_logs
+  meta_logs_filter = sapply(all_logs, function(x) grepl("meta", x, fixed = TRUE))
+  meta_logs = all_logs[meta_logs_filter]
+}
+```
+
+Now we can consolidate all results logs into a single data frame, removing results from data sets in which ART-C did not converge.
+```{r load data, eval=FALSE}
+
+if(!load_from_saved){
+  df = data.frame()
+  removed_count = 0 # number of data sets removed because there was a warning
+  
+  for(results_filename in results_logs){
+  
+    # find corresponding meta log filename
+    # only difference is word "results" changes to work "meta"
+    meta_filename = str_replace(results_filename, "results", "meta")
+    
+    # load in current results file
+    df_res = read.csv(file = results_filename)
+    # load in current meta file
+    df_meta = read.csv(file = meta_filename)
+    
+    # find row of meta log where ART_Con_Warning = 1
+    warning_rows = df_meta[df_meta$ART_Con_Warning == 1,]
+    # add to removed_count
+    removed_count = removed_count + nrow(warning_rows)
+    # get list of data set numbers with ART Con Warnings (ie data sets in warning_rows.)
+    bad_data_sets = warning_rows$Data_Set
+    # remove all trials from bad data sets from df_res
+    df_res = df_res[!(df_res$Data_Set %in% bad_data_sets),]
+    
+    # add distribution type and design columns to df_res
+    # e.g. "./1000_logs/Final/0/2x2/within/results-log-2x2-type-0-within.csv" -> "0"
+    distr_type = strsplit(results_filename, "/")[[1]][4]
+    # add distr type column
+    df_res$Distribution_Type = distr_type
+    
+    # e.g. "./1000_logs/Final/0/2x2/within/results-log-2x2-type-0-within.csv" -> "2x2"
+    design = strsplit(results_filename, "/")[[1]][5]
+    # add design column
+    df_res$Design = design
+    
+    # split string representing condition in contrast to get Num_Factors_in_Contrast
+    # Note: Cstr1 has spaces in it, so divide by 2 and take ceiling to get true number of factors in contrst. 
+    df_res = df_res %>% mutate(Num_Factors_in_Contrast = ceiling(nchar(as.character(Cstr1))/2))
+    
+    # for within-subjects data frames, _Random is appended to end of result column names
+    # need to remove it so can put al l data in one data frame.
+    # remove any _Random for all data frames, won't do anything to between-Ss col names.
+    new_col_names = sapply(names(df_res), function(x) str_remove(x, "_Random"))
+    names(df_res) = new_col_names
+    
+    # add df_res to df
+    df = rbind(df, df_res, make.row.names = FALSE)
+
+    print(distr_type)
+    print(design)
+
+  }
+  
+}
+print("removed count")
+print(removed_count)
+
+```
+Unnecessarily reorder columns in df because they make more sense to me this way.
+Also, rename columns to names used in paper.
+```{r re-order data columns and rename, eval=FALSE}
+if(!load_from_saved){
+  # reorder columns in df
+  # now Data_Set, Num_Responses_per_Condition, BW, Trial, ...., P_Nonparam, Distribution_Type, Design, Num_Factors_in_Contrast
+  # change to Data_Set, Distribution_Type, Design, BW, Num_Responses_per_Condition, Num_Factors_in_Contrast, Trial,...,P_Nonparam
+  df = df %>% select(Data_Set, Distribution_Type, Design, BW, Num_Responses_per_Condition, Num_Factors_in_Contrast, Trial:P_Nonparam)
+  
+  df = rename(df, Population_Distribution = Distribution_Type, Layout = Design, Condition_Sample_Size = Num_Responses_per_Condition, Contrast_Size = Num_Factors_in_Contrast)
+}
+```
+
+
+Saving df with all logs into file in for later use.
+```{r save all logs, eval=FALSE}
+if(save_all_logs){
+  write.csv(df, paste(dir_name, "/all_logs.csv", sep=""))
+}
+```
+
+
+If we've already done the above steps and saved the output to a file, we can just load it in directly.
+```{r load from saved, eval=FALSE}
+if(load_from_saved){
+  df = read.csv(paste(dir_name, "/all_logs.csv", sep=""))
+}
+```
+
+In the paper we define a design as a unique combination of Population Distribution (Population_Distribution), Layout (Layout), Between or Within Subects (BW), Condition Sample Size (Condition_Sample_Size, Contrast Size (Contrast_Size)
+Now that we have our filtered data all in one data frame, we can calculate the proportion of trials, in each design, in which ART-C (ART_Con_Proportion_Sig), ART (ART_Omni_Proportion_Sig), the *t*-test (Param_Proportion_Sig), and the Mann-Whitney U test / Wilcoxon signed rank test (Nonparam_Proportion_Sig) found a significant difference. 
+
+This piece of code isn't really readable, but all it does is count the number of trials for each design in which *p < .05*, and divide that by the total number of trials for each design.
+```{r calculate rejection proportions, eval=FALSE}
+df_results_temp = df %>% group_by(Population_Distribution, Layout, BW, Condition_Sample_Size, Contrast_Size) %>% add_tally(P_ART_Con < .05, name = "ART_Con_Num_Sig") %>% add_tally(P_Param < .05, name = "Param_Num_Sig") %>% add_tally(P_Nonparam < .05, name = "Nonparam_Num_Sig") %>% add_tally(P_ART_Omni < .05, name = "ART_Omni_Num_Sig") %>% add_tally(n(), name = "Num_Trials") %>% mutate(ART_Con_Proportion_Sig = ART_Con_Num_Sig/Num_Trials, Param_Proportion_Sig = Param_Num_Sig/Num_Trials, Nonparam_Proportion_Sig = Nonparam_Num_Sig/Num_Trials, ART_Omni_Proportion_Sig = ART_Omni_Num_Sig/Num_Trials)
+```
+
+Just some more organization: drops unnecessary columns.
+```{r drop extra columns, eval=FALSE}
+df_results = as.data.frame(unique(df_results_temp[c("Population_Distribution", "Layout", "BW", "Condition_Sample_Size", "Contrast_Size", "ART_Con_Num_Sig", "Param_Num_Sig", "Nonparam_Num_Sig", "ART_Omni_Num_Sig", "ART_Con_Proportion_Sig", "Param_Proportion_Sig", "Nonparam_Proportion_Sig", "ART_Omni_Proportion_Sig", "Num_Trials")]))
+```
+
+If saving results into a file to be loaded by data viz notebook.
+```{r save results, eval=FALSE}
+if(save_results){
+  # Name file res_ults so it doesn't get picked up in future iterations of running this notebook when we search for files with "results.csv" in them.
+  write.csv(df_results, paste(dir_name, "/res_ults.csv", sep=""))
+}
+```
