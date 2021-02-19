@@ -1,8 +1,7 @@
 ---
 title: "ART-C Analysis and Visualizations"
-output:
-  html_document: default
-  pdf_document: default
+#output: html_document
+output: rmarkdown::github_document
 ---
 
 # Intro
