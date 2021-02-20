@@ -1,11 +1,12 @@
 ---
 title: "ART-C Analysis and Visualizations"
-#output: html_document
-output: rmarkdown::github_document
+output:
+  github_document:
+    pandoc_args: --webtex
 ---
 
 # Intro
-If you've come here after reading our paper because you're curious about how we did our analysis and made our visualizations, welcome! If not, you can find the paper here for some more technical details (INSERT PAPER LINK).
+If you've come here after reading our paper because you're curious about how we did our analysis and made our visualizations, welcome! If not, you can find the paper here for some more technical details (paper link coming soon).
 
 Either way, we'll start with a short recap about what we're doing and why.
 
@@ -45,11 +46,11 @@ To measure Type I error rates, we made approximately 200 data sets for each poss
 
 To measure power, we made approximately 200 data sets for each possible design in which every condition with a single data set had different locations. This meant that there was always a true difference between conditions. So, for each design, we counted up the number of times *p* was *< .05* and divided that by the total number of tests we did for that design -- this is called the *observed statistical power*.
 
-The code we used to calculate observed Type I error and observed statistical power for our raw logs can be found here (INSERT LINK), but it's not the nicest code I've ever written, and we really did just count how many times we saw *p < .05* and how many tests we did and divide.
+The code we used to calculate observed Type I error and observed statistical power for our raw logs can be found here (TODO: link coming soon), but it's not the nicest code I've ever written, and we really did just count how many times we saw *p < .05* and how many tests we did and divide.
 
 Alright, now that we've sifted through some definitions, we can look at some descriptive statistics and visualizations that compare ART-C to other methods, including the original ART.
 
-We focus on our large-scale analysis, but if you'd like to see an example that illustrates the problems with using ART to conduct multifactor contrasts and how to use the R package we wrote to conduct multifactor contrasts with ART-C, take a look at the [package vignette](https://cran.r-project.org/web/packages/ARTool/vignettes/art-contrasts.html). If you'd like to read a paper on the original ART method, you can find that [here](https://dl.acm.org/doi/abs/10.1145/1978942.1978963?casa_token=ZuKwCmxP2iMAAAAA:kF4sSIULiGXilE0NCmmVC6oHnfUI7P8Ffe1F-M2B5gHj9HgOZ_vYM43NUkaCKvzqWDNVZjI0eflAlg). And, if you'd like to interact with our data more, the data and source code for this notebook are available (INSERT LINK)
+We focus on our large-scale analysis, but if you'd like to see an example that illustrates the problems with using ART to conduct multifactor contrasts and how to use the R package we wrote to conduct multifactor contrasts with ART-C, take a look at the [package vignette](https://cran.r-project.org/web/packages/ARTool/vignettes/art-contrasts.html). If you'd like to read a paper on the original ART method, you can find that [here](https://dl.acm.org/doi/abs/10.1145/1978942.1978963?casa_token=ZuKwCmxP2iMAAAAA:kF4sSIULiGXilE0NCmmVC6oHnfUI7P8Ffe1F-M2B5gHj9HgOZ_vYM43NUkaCKvzqWDNVZjI0eflAlg). And, if you'd like to interact with our data more, the data and source code for this notebook are available (TODO link coming soon)
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -93,7 +94,6 @@ theme =
 We start by reading in the data and making all factors factors. Each row has the proportion of significant results over all trials for a single design.
 ```{r read data}
 dir_name = "./raw_logs"
-# yes, i named my results file res_ults to not conflict with logs with results at the "trial" level. don't judge me.
 df = read.csv(paste(dir_name, "/res_ults.csv", sep=""))
 
 df$Layout = factor(df$Layout, levels=c("2x2", "3x3", "2x2x2")) # reorder Layout. needed for plots later

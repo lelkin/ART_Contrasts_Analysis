@@ -5,8 +5,8 @@ ART-C Analysis and Visualizations
 
 If you’ve come here after reading our paper because you’re curious about
 how we did our analysis and made our visualizations, welcome\! If not,
-you can find the paper here for some more technical details (INSERT
-PAPER LINK).
+you can find the paper here for some more technical details (paper link
+coming soon).
 
 Either way, we’ll start with a short recap about what we’re doing and
 why.
@@ -27,9 +27,14 @@ We define a *design* as a unique combination of:
 
 **Layout**: The number of factors and number of levels per factor in the
 data set.  
-    Values: two factors with two levels each (2 \(\times\) 2), two
-factors with three levels each (3 \(\times\) 3), and three factors with
-two levels each (2 \(\times\) 2 \(\times\) 2).  
+    Values: two factors with two levels each (2
+![\\times](https://latex.codecogs.com/png.latex?%5Ctimes "\\times") 2),
+two factors with three levels each (3
+![\\times](https://latex.codecogs.com/png.latex?%5Ctimes "\\times") 3),
+and three factors with two levels each (2
+![\\times](https://latex.codecogs.com/png.latex?%5Ctimes "\\times") 2
+![\\times](https://latex.codecogs.com/png.latex?%5Ctimes "\\times")
+2).  
     Column name in logs: Layout
 
   
@@ -91,9 +96,10 @@ was *\< .05* and divided that by the total number of tests we did for
 that design – this is called the *observed statistical power*.
 
 The code we used to calculate observed Type I error and observed
-statistical power for our raw logs can be found here (INSERT LINK), but
-it’s not the nicest code I’ve ever written, and we really did just count
-how many times we saw *p \< .05* and how many tests we did and divide.
+statistical power for our raw logs can be found here (TODO: link coming
+soon), but it’s not the nicest code I’ve ever written, and we really did
+just count how many times we saw *p \< .05* and how many tests we did
+and divide.
 
 Alright, now that we’ve sifted through some definitions, we can look at
 some descriptive statistics and visualizations that compare ART-C to
@@ -108,7 +114,7 @@ If you’d like to read a paper on the original ART method, you can find
 that
 [here](https://dl.acm.org/doi/abs/10.1145/1978942.1978963?casa_token=ZuKwCmxP2iMAAAAA:kF4sSIULiGXilE0NCmmVC6oHnfUI7P8Ffe1F-M2B5gHj9HgOZ_vYM43NUkaCKvzqWDNVZjI0eflAlg).
 And, if you’d like to interact with our data more, the data and source
-code for this notebook are available (INSERT LINK)
+code for this notebook are available (TODO link coming soon)
 
 # Setup
 
@@ -118,7 +124,6 @@ design.
 
 ``` r
 dir_name = "./raw_logs"
-# yes, i named my results file res_ults to not conflict with logs with results at the "trial" level. don't judge me.
 df = read.csv(paste(dir_name, "/res_ults.csv", sep=""))
 
 df$Layout = factor(df$Layout, levels=c("2x2", "3x3", "2x2x2")) # reorder Layout. needed for plots later
@@ -383,9 +388,11 @@ A common practice in statistics is the use the *t*-test as a baseline
 comparison for Type I error rate, so that’s what we do here.
 
 When looking at our data we saw that 1-Factor Contrasts from a 2
-\(\times\) 2 \(\times\) 2 or 3 \(\times\) 3 Layout and a Cauchy
-Population Distribution have very high Type I error rates. We make a new
-data frame with just those data sets, aptly named
+![\\times](https://latex.codecogs.com/png.latex?%5Ctimes "\\times") 2
+![\\times](https://latex.codecogs.com/png.latex?%5Ctimes "\\times") 2 or
+3 ![\\times](https://latex.codecogs.com/png.latex?%5Ctimes "\\times") 3
+Layout and a Cauchy Population Distribution have very high Type I error
+rates. We make a new data frame with just those data sets, aptly named
 *df\_same\_loc\_bad\_cauchy* and look at some descriptive stats, and we
 use the term *bad Cauchy* to describe those designs.
 
@@ -409,9 +416,13 @@ t-test
 ART-C Type I error rates on “bad Cauchy” data are really high and the
 *t*-test Type I error rates aren’t. For the remainder of this Type I
 error rate analysis, we omit all “bad Cauchy” data. We write “no Cauchy”
-below, but that’s a bit misleading. It really means no Cauchy \(\times\)
-(2 \(\times\) 2 \(\times\) 2 or 3 \(\times\) 3) \(\times\) 1-Factor
-Contrasts
+below, but that’s a bit misleading. It really means no Cauchy
+![\\times](https://latex.codecogs.com/png.latex?%5Ctimes "\\times") (2
+![\\times](https://latex.codecogs.com/png.latex?%5Ctimes "\\times") 2
+![\\times](https://latex.codecogs.com/png.latex?%5Ctimes "\\times") 2 or
+3 ![\\times](https://latex.codecogs.com/png.latex?%5Ctimes "\\times") 3)
+![\\times](https://latex.codecogs.com/png.latex?%5Ctimes "\\times")
+1-Factor Contrasts
 
 ``` r
 # remove single factor cauchy contrasts from 2x2x2 and 3x3 distrs since we know they're bad
@@ -435,12 +446,13 @@ their expected value of .05, but the standard deviation for ART-C is
 much smaller, and we’ll see in the visualization that ART-C Type I error
 rates are more closely clustered are .05 than the *t*-test’s are.
 
-### Type I Error by Contrast Size \(\times\) Layout
+### Type I Error by Contrast Size ![\\times](https://latex.codecogs.com/png.latex?%5Ctimes "\\times") Layout
 
 None of the design properties (aside from the Cauchy scenario discussed
 above) have a large impact on observed Type I error rate. We chose to
-visualize and describe it using Contrast Size \(\times\) Layout. Some
-descriptive stats:
+visualize and describe it using Contrast Size
+![\\times](https://latex.codecogs.com/png.latex?%5Ctimes "\\times")
+Layout. Some descriptive stats:
 
 ART-C
 
@@ -507,9 +519,11 @@ p
 
 Overall, ART-C Type I error rates look really good\! They’re closer to
 their expected value of .05 than *t*-test Type I error rates for all
-combinations of Contrast Size \(\times\) Layout except for the “bad
-Cauchy” designs. The *t*-test’s Type I error rates are still pretty good
-– the real advantage of using ART-C is its power.
+combinations of Contrast Size
+![\\times](https://latex.codecogs.com/png.latex?%5Ctimes "\\times")
+Layout except for the “bad Cauchy” designs. The *t*-test’s Type I error
+rates are still pretty good – the real advantage of using ART-C is its
+power.
 
 # Power
 

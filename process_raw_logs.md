@@ -1,16 +1,9 @@
----
-title: "ART-C Raw Trials to Per-Design Results"
-output: rmarkdown::github_document
----
+ART-C Raw Trials to Per-Design Results
+================
 
 Normal setup and setting up some global flags.
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-library(tidyverse)
-library(stringr)
-```
 
-```{r globalc, eval=FALSE}
+``` r
 # indicates whether we load logs from saved all_logs file or read them in (i.e. whether or not to execute the first 2 chunks) 
 load_from_saved = FALSE
 # indicates whether to save out log file generated from combing all logs together
@@ -21,12 +14,18 @@ save_results = FALSE
 dir_name = "./raw_logs"
 ```
 
-Each combination of: distribution type, design, and between/within has its own set of log files: a meta log file and a results log file.
-A single line in the results log file contains the result of one trial.
-The meta log file has one line per data set in the corresponding results file. Among other things, the meta log file indicates which data sets produced errors when using the ART-C method (which is a common problem when using lmer, which is what ART-C uses behind the scenes).
+Each combination of: distribution type, design, and between/within has
+its own set of log files: a meta log file and a results log file. A
+single line in the results log file contains the result of one trial.
+The meta log file has one line per data set in the corresponding results
+file. Among other things, the meta log file indicates which data sets
+produced errors when using the ART-C method (which is a common problem
+when using lmer, which is what ART-C uses behind the scenes).
 
-Our first step is to identify and load all results log files and meta log files.
-```{r find logs, eval=FALSE}
+Our first step is to identify and load all results log files and meta
+log files.
+
+``` r
 if(!load_from_saved){
   # gets all csv files in dir_name recursively (ie no matter how nested)
   all_logs = list.files(path = dir_name, pattern = "*.csv", recursive = TRUE, full.names = TRUE)
@@ -41,9 +40,10 @@ if(!load_from_saved){
 }
 ```
 
-Now we can consolidate all results logs into a single data frame, removing results from data sets in which ART-C did not converge.
-```{r load data, eval=FALSE}
+Now we can consolidate all results logs into a single data frame,
+removing results from data sets in which ART-C did not converge.
 
+``` r
 if(!load_from_saved){
   df = data.frame()
   removed_count = 0 # number of data sets removed because there was a warning
@@ -100,11 +100,12 @@ if(!load_from_saved){
 }
 print("removed count")
 print(removed_count)
-
 ```
-Unnecessarily reorder columns in df because they make more sense to me this way.
-Also, rename columns to names used in paper.
-```{r re-order data columns and rename, eval=FALSE}
+
+Unnecessarily reorder columns in df because they make more sense to me
+this way. Also, rename columns to names used in paper.
+
+``` r
 if(!load_from_saved){
   # reorder columns in df
   # now Data_Set, Num_Responses_per_Condition, BW, Trial, ...., P_Nonparam, Distribution_Type, Design, Num_Factors_in_Contrast
@@ -115,37 +116,50 @@ if(!load_from_saved){
 }
 ```
 
-
 Saving df with all logs into file in for later use.
-```{r save all logs, eval=FALSE}
+
+``` r
 if(save_all_logs){
   write.csv(df, paste(dir_name, "/all_logs.csv", sep=""))
 }
 ```
 
+If we’ve already done the above steps and saved the output to a file, we
+can just load it in directly.
 
-If we've already done the above steps and saved the output to a file, we can just load it in directly.
-```{r load from saved, eval=FALSE}
+``` r
 if(load_from_saved){
   df = read.csv(paste(dir_name, "/all_logs.csv", sep=""))
 }
 ```
 
-In the paper we define a design as a unique combination of Population Distribution (Population_Distribution), Layout (Layout), Between or Within Subects (BW), Condition Sample Size (Condition_Sample_Size, Contrast Size (Contrast_Size)
-Now that we have our filtered data all in one data frame, we can calculate the proportion of trials, in each design, in which ART-C (ART_Con_Proportion_Sig), ART (ART_Omni_Proportion_Sig), the *t*-test (Param_Proportion_Sig), and the Mann-Whitney U test / Wilcoxon signed rank test (Nonparam_Proportion_Sig) found a significant difference. 
+In the paper we define a design as a unique combination of Population
+Distribution (Population\_Distribution), Layout (Layout), Between or
+Within Subects (BW), Condition Sample Size (Condition\_Sample\_Size,
+Contrast Size (Contrast\_Size) Now that we have our filtered data all in
+one data frame, we can calculate the proportion of trials, in each
+design, in which ART-C (ART\_Con\_Proportion\_Sig), ART
+(ART\_Omni\_Proportion\_Sig), the *t*-test (Param\_Proportion\_Sig), and
+the Mann-Whitney U test / Wilcoxon signed rank test
+(Nonparam\_Proportion\_Sig) found a significant difference.
 
-This piece of code isn't really readable, but all it does is count the number of trials for each design in which *p < .05*, and divide that by the total number of trials for each design.
-```{r calculate rejection proportions, eval=FALSE}
+This piece of code isn’t really readable, but all it does is count the
+number of trials for each design in which *p \< .05*, and divide that by
+the total number of trials for each design.
+
+``` r
 df_results_temp = df %>% group_by(Population_Distribution, Layout, BW, Condition_Sample_Size, Contrast_Size) %>% add_tally(P_ART_Con < .05, name = "ART_Con_Num_Sig") %>% add_tally(P_Param < .05, name = "Param_Num_Sig") %>% add_tally(P_Nonparam < .05, name = "Nonparam_Num_Sig") %>% add_tally(P_ART_Omni < .05, name = "ART_Omni_Num_Sig") %>% add_tally(n(), name = "Num_Trials") %>% mutate(ART_Con_Proportion_Sig = ART_Con_Num_Sig/Num_Trials, Param_Proportion_Sig = Param_Num_Sig/Num_Trials, Nonparam_Proportion_Sig = Nonparam_Num_Sig/Num_Trials, ART_Omni_Proportion_Sig = ART_Omni_Num_Sig/Num_Trials)
 ```
 
 Just some more organization: drops unnecessary columns.
-```{r drop extra columns, eval=FALSE}
+
+``` r
 df_results = as.data.frame(unique(df_results_temp[c("Population_Distribution", "Layout", "BW", "Condition_Sample_Size", "Contrast_Size", "ART_Con_Num_Sig", "Param_Num_Sig", "Nonparam_Num_Sig", "ART_Omni_Num_Sig", "ART_Con_Proportion_Sig", "Param_Proportion_Sig", "Nonparam_Proportion_Sig", "ART_Omni_Proportion_Sig", "Num_Trials")]))
 ```
 
 If saving results into a file to be loaded by data viz notebook.
-```{r save results, eval=FALSE}
+
+``` r
 if(save_results){
   # Name file res_ults so it doesn't get picked up in future iterations of running this notebook when we search for files with "results.csv" in them.
   write.csv(df_results, paste(dir_name, "./res_ults.csv", sep=""))
