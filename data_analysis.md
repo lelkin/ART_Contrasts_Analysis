@@ -5,8 +5,8 @@ ART-C Analysis and Visualizations
 
 If you’ve come here after reading our paper because you’re curious about
 how we did our analysis and made our visualizations, welcome\! If not,
-you can find the paper here for some more technical details (paper link
-coming soon).
+you can find the paper here for some more technical details (TODO: paper
+link coming soon).
 
 Either way, we’ll start with a short recap about what we’re doing and
 why.
@@ -96,10 +96,11 @@ was *\< .05* and divided that by the total number of tests we did for
 that design – this is called the *observed statistical power*.
 
 The code we used to calculate observed Type I error and observed
-statistical power for our raw logs can be found here (TODO: link coming
-soon), but it’s not the nicest code I’ve ever written, and we really did
-just count how many times we saw *p \< .05* and how many tests we did
-and divide.
+statistical power for our raw logs can be found
+[here](https://github.com/lelkin/ART_Contrasts_Analysis/blob/test/process_raw_logs.md),
+but it’s not the nicest code I’ve ever written, and we really just
+counted how many times we saw *p \< .05* and how many tests we did and
+divide.
 
 Alright, now that we’ve sifted through some definitions, we can look at
 some descriptive statistics and visualizations that compare ART-C to
@@ -113,8 +114,6 @@ vignette](https://cran.r-project.org/web/packages/ARTool/vignettes/art-contrasts
 If you’d like to read a paper on the original ART method, you can find
 that
 [here](https://dl.acm.org/doi/abs/10.1145/1978942.1978963?casa_token=ZuKwCmxP2iMAAAAA:kF4sSIULiGXilE0NCmmVC6oHnfUI7P8Ffe1F-M2B5gHj9HgOZ_vYM43NUkaCKvzqWDNVZjI0eflAlg).
-And, if you’d like to interact with our data more, the data and source
-code for this notebook are available (TODO link coming soon)
 
 # Setup
 
