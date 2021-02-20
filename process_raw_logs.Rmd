@@ -1,6 +1,8 @@
 ---
 title: "ART-C Raw Trials to Per-Design Results"
-output: rmarkdown::github_document
+output:
+  github_document:
+    pandoc_args: --webtex
 ---
 
 Normal setup and setting up some global flags.
