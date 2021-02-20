@@ -1,7 +1,7 @@
 # ART_Contrasts_Analysis
 This repo contains all code used to validate the ART-C procedure, documents explaining the process, and logs of results created along the way.
 
-**For an approachable explanation of what we did and how we did it, read data_analysis.html.**
+**For an approachable explanation of what we did and how we did it, read data_analysis.md.**
 
 ## Code Files
 * generate_data_and_run_contrasts.R: R code that was used to generate all data sets and run all contrasts.
