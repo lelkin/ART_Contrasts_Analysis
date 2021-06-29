@@ -1,3 +1,4 @@
 logs/*
+raw_logs/*
 .DS_Store
 .Rhistory
