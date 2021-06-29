@@ -227,8 +227,6 @@ ddply(df_diff_loc, .(Population_Distribution), summarize, mean = mean(ART_Con_Pr
 
 Now vizualizing with ART in gray and ART-C in teal.
 ```{r vizualization ART vs ART-C Power by Distribution STACKED, warning=FALSE, fig.width=6, fig.height=9}
-# create df with only single-factor contrasts
-df_diff_loc_1factor = df_diff_loc %>% filter(Contrast_Size == "1-Factor Contrasts")
 
 # tick spacing
 breaks.x = seq(0,.9,0.1)
@@ -449,9 +447,6 @@ ddply(df_diff_loc, .(Population_Distribution), summarize, mean = mean(Nonparam_P
 
 Visualizing:
 ```{r Power by Population Distribution, no Cauchy, warning=FALSE, fig.width=6, fig.height=12}
-
-# remove cauchy for spacing
-df_diff_loc_no_cauchy = df_diff_loc %>% filter(Population_Distribution != "Cauchy")
 
 # tick spacing
 breaks.x = seq(0,.9,0.1)
