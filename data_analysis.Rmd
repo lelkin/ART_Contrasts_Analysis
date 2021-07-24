@@ -1,8 +1,6 @@
 ---
 title: "ART-C Analysis and Visualizations"
-output:
-  github_document:
-    pandoc_args: --webtex
+output: html_document
 ---
 
 # Intro

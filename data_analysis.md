@@ -27,14 +27,9 @@ We define a *design* as a unique combination of:
 
 **Layout**: The number of factors and number of levels per factor in the
 data set.  
-    Values: two factors with two levels each (2
-![\\times](https://latex.codecogs.com/png.latex?%5Ctimes "\\times") 2),
-two factors with three levels each (3
-![\\times](https://latex.codecogs.com/png.latex?%5Ctimes "\\times") 3),
-and three factors with two levels each (2
-![\\times](https://latex.codecogs.com/png.latex?%5Ctimes "\\times") 2
-![\\times](https://latex.codecogs.com/png.latex?%5Ctimes "\\times")
-2).  
+    Values: two factors with two levels each (2 \(\times\) 2), two
+factors with three levels each (3 \(\times\) 3), and three factors with
+two levels each (2 \(\times\) 2 \(\times\) 2).  
     Column name in logs: Layout
 
   
@@ -292,9 +287,6 @@ ddply(df_diff_loc, .(Population_Distribution), summarize, mean = mean(ART_Con_Pr
 Now vizualizing with ART in gray and ART-C in teal.
 
 ``` r
-# create df with only single-factor contrasts
-df_diff_loc_1factor = df_diff_loc %>% filter(Contrast_Size == "1-Factor Contrasts")
-
 # tick spacing
 breaks.x = seq(0,.9,0.1)
 # labels are character versions of breaks
@@ -387,11 +379,9 @@ A common practice in statistics is the use the *t*-test as a baseline
 comparison for Type I error rate, so that’s what we do here.
 
 When looking at our data we saw that 1-Factor Contrasts from a 2
-![\\times](https://latex.codecogs.com/png.latex?%5Ctimes "\\times") 2
-![\\times](https://latex.codecogs.com/png.latex?%5Ctimes "\\times") 2 or
-3 ![\\times](https://latex.codecogs.com/png.latex?%5Ctimes "\\times") 3
-Layout and a Cauchy Population Distribution have very high Type I error
-rates. We make a new data frame with just those data sets, aptly named
+\(\times\) 2 \(\times\) 2 or 3 \(\times\) 3 Layout and a Cauchy
+Population Distribution have very high Type I error rates. We make a new
+data frame with just those data sets, aptly named
 *df\_same\_loc\_bad\_cauchy* and look at some descriptive stats, and we
 use the term *bad Cauchy* to describe those designs.
 
@@ -415,13 +405,9 @@ t-test
 ART-C Type I error rates on “bad Cauchy” data are really high and the
 *t*-test Type I error rates aren’t. For the remainder of this Type I
 error rate analysis, we omit all “bad Cauchy” data. We write “no Cauchy”
-below, but that’s a bit misleading. It really means no Cauchy
-![\\times](https://latex.codecogs.com/png.latex?%5Ctimes "\\times") (2
-![\\times](https://latex.codecogs.com/png.latex?%5Ctimes "\\times") 2
-![\\times](https://latex.codecogs.com/png.latex?%5Ctimes "\\times") 2 or
-3 ![\\times](https://latex.codecogs.com/png.latex?%5Ctimes "\\times") 3)
-![\\times](https://latex.codecogs.com/png.latex?%5Ctimes "\\times")
-1-Factor Contrasts
+below, but that’s a bit misleading. It really means no Cauchy \(\times\)
+(2 \(\times\) 2 \(\times\) 2 or 3 \(\times\) 3) \(\times\) 1-Factor
+Contrasts
 
 ``` r
 # remove single factor cauchy contrasts from 2x2x2 and 3x3 distrs since we know they're bad
@@ -445,13 +431,12 @@ their expected value of .05, but the standard deviation for ART-C is
 much smaller, and we’ll see in the visualization that ART-C Type I error
 rates are more closely clustered are .05 than the *t*-test’s are.
 
-### Type I Error by Contrast Size ![\\times](https://latex.codecogs.com/png.latex?%5Ctimes "\\times") Layout
+### Type I Error by Contrast Size \(\times\) Layout
 
 None of the design properties (aside from the Cauchy scenario discussed
 above) have a large impact on observed Type I error rate. We chose to
-visualize and describe it using Contrast Size
-![\\times](https://latex.codecogs.com/png.latex?%5Ctimes "\\times")
-Layout. Some descriptive stats:
+visualize and describe it using Contrast Size \(\times\) Layout. Some
+descriptive stats:
 
 ART-C
 
@@ -518,11 +503,9 @@ p
 
 Overall, ART-C Type I error rates look really good\! They’re closer to
 their expected value of .05 than *t*-test Type I error rates for all
-combinations of Contrast Size
-![\\times](https://latex.codecogs.com/png.latex?%5Ctimes "\\times")
-Layout except for the “bad Cauchy” designs. The *t*-test’s Type I error
-rates are still pretty good – the real advantage of using ART-C is its
-power.
+combinations of Contrast Size \(\times\) Layout except for the “bad
+Cauchy” designs. The *t*-test’s Type I error rates are still pretty good
+– the real advantage of using ART-C is its power.
 
 # Power
 
@@ -656,9 +639,6 @@ ddply(df_diff_loc, .(Population_Distribution), summarize, mean = mean(Nonparam_P
 Visualizing:
 
 ``` r
-# remove cauchy for spacing
-df_diff_loc_no_cauchy = df_diff_loc %>% filter(Population_Distribution != "Cauchy")
-
 # tick spacing
 breaks.x = seq(0,.9,0.1)
 
