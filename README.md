@@ -11,8 +11,8 @@ Outputs res_ults.csv.
 * data_analysis.Rmd: Raw R markdown notebook used to conduct all analysis from res_ults.csv and create data visualizations seen in paper.
 
 ## Explanatory Documents
-* process_raw_logs.html: Rendered version of process_raw_logs.Rmd
-* **data_analysis.html**: Rendered version of data_analysis.Rmd.
+* process_raw_logs.md: Rendered version of process_raw_logs.Rmd
+* **data_analysis.md**: Rendered version of data_analysis.Rmd.
 
 ## Data Files
 * Type_I_all_designs.csv: csv file containing observed Type I error rates for all "designs".

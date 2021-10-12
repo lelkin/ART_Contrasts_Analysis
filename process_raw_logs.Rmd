@@ -1,8 +1,6 @@
 ---
 title: "ART-C Raw Trials to Per-Design Results"
-output:
-  github_document:
-    pandoc_args: --webtex
+output: github_document
 ---
 
 Normal setup and setting up some global flags.
