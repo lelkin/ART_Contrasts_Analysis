@@ -12,7 +12,7 @@ If you've come here after reading our paper because you're curious about how we 
 
 Either way, we'll start with a short recap about what we're doing and why.
 
-The ART procedure is a nonparametric data analysis method that aligns and ranks data, and the resulting aligned and ranked data can be analyzed by an ANOVA. It's become popular because it's simple to use and unlike other popular nonparametric methods, it can find interaction effects. It can also be used to conduct contrasts that compare levels within a single factor (i.e., posthoc tests following a significant main effect), but it can't be used to conduct contrasts that involve levels of multiple factors (i.e., posthoc tests following a significant interaction effect). So, we created a new method, ART-C, that uses a different procedure to align and rank data and can be used to conduct multifactor contrasts.
+The ART procedure is a an algorithm for analyzing nonparametric data that aligns and ranks data, and the resulting aligned and ranked data can be analyzed by an ANOVA. It's become popular because it's simple to use and unlike other popular nonparametric methods, it can find interaction effects. It can also be used to conduct contrasts that compare levels within a single factor (i.e., post hoc tests following a significant main effect), but it can't be used to conduct contrasts that involve levels of multiple factors (i.e., post hoc tests following a significant interaction effect). So, we created a new method, ART-C, that uses a different procedure to align data and can be used to conduct multifactor contrasts.
 
 We define a *design* as a unique combination of:
 \
