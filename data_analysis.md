@@ -1,12 +1,10 @@
-ART-C Analysis and Visualizations
-================
-
-# Intro
+Intro
+=====
 
 If you’ve come here after reading our paper because you’re curious about
-how we did our analysis and made our visualizations, welcome\! If not,
-you can find the paper here for some more technical details (TODO: paper
-link coming soon).
+how we did our analysis and made our visualizations, welcome! If not,
+you can find the paper [here](https://doi.org/10.1145/3472749.3474784)
+for some more technical details.
 
 Either way, we’ll start with a short recap about what we’re doing and
 why.
@@ -27,9 +25,9 @@ We define a *design* as a unique combination of:
 
 **Layout**: The number of factors and number of levels per factor in the
 data set.  
-    Values: two factors with two levels each (2 \(\times\) 2), two
-factors with three levels each (3 \(\times\) 3), and three factors with
-two levels each (2 \(\times\) 2 \(\times\) 2).  
+    Values: two factors with two levels each (2 × 2), two factors with
+three levels each (3 × 3), and three factors with two levels each (2 × 2
+× 2).  
     Column name in logs: Layout
 
   
@@ -110,7 +108,8 @@ If you’d like to read a paper on the original ART method, you can find
 that
 [here](https://dl.acm.org/doi/abs/10.1145/1978942.1978963?casa_token=ZuKwCmxP2iMAAAAA:kF4sSIULiGXilE0NCmmVC6oHnfUI7P8Ffe1F-M2B5gHj9HgOZ_vYM43NUkaCKvzqWDNVZjI0eflAlg).
 
-# Setup
+Setup
+=====
 
 We start by reading in the data and making all factors factors. Each row
 has the proportion of significant results over all trials for a single
@@ -133,14 +132,16 @@ error rates, and df\_diff\_loc with results from all designs in which
 population locations were different and will be used to measure
 statistical power.
 
-# Comparison with ART
+Comparison with ART
+===================
 
 So, we started by saying that we can’t use the original ART to conduct
 multifactor contrasts, but we’ve got to back that up with some data. We
 used the original ART to conduct contrasts on our 72,000 synthetic data
 sets and illustrate the results here. We also compare it to ART-C.
 
-## ART Type I Error
+ART Type I Error
+----------------
 
 Let’s look at some descriptive stats: the overall mean and standard
 deviation of Type I error for both ART-C and ART. Remember, we
@@ -219,7 +220,7 @@ p = ggplot(df_same_loc) +
 p
 ```
 
-![](data_analysis_files/figure-gfm/vizualization%20ART%20vs%20ART-C%20Type%20I%20error%20by%20Distribution-1.png)<!-- -->
+![](data_analysis_files/figure-markdown_github/vizualization%20ART%20vs%20ART-C%20Type%20I%20error%20by%20Distribution-1.png)
 
 We can see that the original ART inflates Type I error rates for data
 drawn from lognormal, exponential, and Cauchy populations, and for all
@@ -233,7 +234,8 @@ ART and ART-C Type I error rates and didn’t find anything interesting,
 but you can use the source code for this notebook to look at it
 yourself.
 
-## ART Power
+ART Power
+---------
 
 So, we know that ART has infalted Type I error rates, but it’s still
 worth looking at how its power compares to ART-C.
@@ -307,7 +309,7 @@ p = ggplot(df_diff_loc) +
 p
 ```
 
-![](data_analysis_files/figure-gfm/vizualization%20ART%20vs%20ART-C%20Power%20by%20Distribution%20STACKED-1.png)<!-- -->
+![](data_analysis_files/figure-markdown_github/vizualization%20ART%20vs%20ART-C%20Power%20by%20Distribution%20STACKED-1.png)
 
 The descriptive stats and this figure both show us that ART-C has
 greater power than ART for every Population Distribution.
@@ -356,7 +358,7 @@ p = ggplot(df_diff_loc) +
 p
 ```
 
-![](data_analysis_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
+![](data_analysis_files/figure-markdown_github/unnamed-chunk-9-1.png)
 
 ART and ART-C are mathematically equivalent when analyzing 1-factor
 contrasts, but when we look at 2-factor contrasts and 3-factor
@@ -373,17 +375,17 @@ greater power than the ART, which means it’s the better method to use to
 conduct contrasts *within the ART paradigm*. However, we also need to
 see how its Type I error and power compare to other methods’.
 
-# Type I Error Rate
+Type I Error Rate
+=================
 
 A common practice in statistics is the use the *t*-test as a baseline
 comparison for Type I error rate, so that’s what we do here.
 
-When looking at our data we saw that 1-Factor Contrasts from a 2
-\(\times\) 2 \(\times\) 2 or 3 \(\times\) 3 Layout and a Cauchy
-Population Distribution have very high Type I error rates. We make a new
-data frame with just those data sets, aptly named
-*df\_same\_loc\_bad\_cauchy* and look at some descriptive stats, and we
-use the term *bad Cauchy* to describe those designs.
+When looking at our data we saw that 1-Factor Contrasts from a 2 × 2 × 2
+or 3 × 3 Layout and a Cauchy Population Distribution have very high Type
+I error rates. We make a new data frame with just those data sets, aptly
+named *df\_same\_loc\_bad\_cauchy* and look at some descriptive stats,
+and we use the term *bad Cauchy* to describe those designs.
 
 ``` r
 # descriptive stats with single factor cauchy contrasts from 2x2x2 and 3x3 distrs
@@ -405,9 +407,8 @@ t-test
 ART-C Type I error rates on “bad Cauchy” data are really high and the
 *t*-test Type I error rates aren’t. For the remainder of this Type I
 error rate analysis, we omit all “bad Cauchy” data. We write “no Cauchy”
-below, but that’s a bit misleading. It really means no Cauchy \(\times\)
-(2 \(\times\) 2 \(\times\) 2 or 3 \(\times\) 3) \(\times\) 1-Factor
-Contrasts
+below, but that’s a bit misleading. It really means no Cauchy × (2 × 2 ×
+2 or 3 × 3) × 1-Factor Contrasts
 
 ``` r
 # remove single factor cauchy contrasts from 2x2x2 and 3x3 distrs since we know they're bad
@@ -431,12 +432,12 @@ their expected value of .05, but the standard deviation for ART-C is
 much smaller, and we’ll see in the visualization that ART-C Type I error
 rates are more closely clustered are .05 than the *t*-test’s are.
 
-### Type I Error by Contrast Size \(\times\) Layout
+### Type I Error by Contrast Size × Layout
 
 None of the design properties (aside from the Cauchy scenario discussed
 above) have a large impact on observed Type I error rate. We chose to
-visualize and describe it using Contrast Size \(\times\) Layout. Some
-descriptive stats:
+visualize and describe it using Contrast Size × Layout. Some descriptive
+stats:
 
 ART-C
 
@@ -456,7 +457,6 @@ ddply(df_same_loc_no_cauchy, .(Contrast_Size,Layout), summarize, mean = mean(ART
 T-test
 
 ``` r
-# descriptive statistics broken down by num factors in contrast and Layout - t-test
 ddply(df_same_loc_no_cauchy, .(Contrast_Size,Layout), summarize, mean = mean(Param_Proportion_Sig), sd = sd(Param_Proportion_Sig))
 ```
 
@@ -499,15 +499,205 @@ theme+
 p
 ```
 
-![](data_analysis_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
+![](data_analysis_files/figure-markdown_github/unnamed-chunk-18-1.png)
 
-Overall, ART-C Type I error rates look really good\! They’re closer to
+Overall, ART-C Type I error rates look really good! They’re closer to
 their expected value of .05 than *t*-test Type I error rates for all
-combinations of Contrast Size \(\times\) Layout except for the “bad
-Cauchy” designs. The *t*-test’s Type I error rates are still pretty good
-– the real advantage of using ART-C is its power.
+combinations of Contrast Size × Layout except for the “bad Cauchy”
+designs. The *t*-test’s Type I error rates are still pretty good – the
+real advantage of using ART-C is its power.
 
-# Power
+We didn’t look at how other properties impact Type I error in our paper,
+but we’ll look at them here.
+
+### Type I Error by Condition Sample Size
+
+Note that we are still excluding data drawn from a Cauchy Distribution
+here. Descriptive stats:
+
+ART-C
+
+``` r
+ddply(df_same_loc_no_cauchy, .(Condition_Sample_Size), summarize, mean = mean(ART_Con_Proportion_Sig), sd = sd(ART_Con_Proportion_Sig))
+```
+
+    ##   Condition_Sample_Size       mean          sd
+    ## 1                     8 0.05224353 0.012283575
+    ## 2                    16 0.05012786 0.009301392
+    ## 3                    24 0.04868225 0.008375107
+    ## 4                    32 0.04918884 0.008325407
+    ## 5                    40 0.04920116 0.007749958
+
+T-test
+
+``` r
+ddply(df_same_loc_no_cauchy, .(Condition_Sample_Size), summarize, mean = mean(Param_Proportion_Sig), sd = sd(Param_Proportion_Sig))
+```
+
+    ##   Condition_Sample_Size       mean         sd
+    ## 1                     8 0.04726386 0.01277286
+    ## 2                    16 0.04749995 0.01246879
+    ## 3                    24 0.04792999 0.01196373
+    ## 4                    32 0.04798227 0.01295795
+    ## 5                    40 0.04802191 0.01170892
+
+Now visualizing
+
+``` r
+# tick spacing
+breaks.x = seq(0.05,1,0.1)
+
+# labels are character versions of breaks
+labels.x = as.character(breaks.x)
+
+p =ggplot(df_same_loc_no_cauchy) +
+ geom_density( aes(x = Param_Proportion_Sig, y= ..count..), stat="binline", binwidth=.01, draw_baseline=FALSE, fill="azure4", color = NA, alpha=.6,
+               position = position_nudge(y=70)) +
+ geom_density( aes(x = ART_Con_Proportion_Sig, y= ..count..), stat="binline", binwidth=.01, draw_baseline=FALSE, fill=teal, color=NA) +
+theme+
+theme(plot.title = element_text(color = "black",hjust=.5,size=12)) +
+  # set x-axis label
+  xlab("Observed Type I Error Rate") +
+  # set y-axis label to nothing
+  ylab("") +
+  facet_wrap(~Condition_Sample_Size, nrow=1) +
+  scale_x_continuous(breaks = breaks.x, label = labels.x, limits = c(0,.1)) +
+  labs(title = "T-test (gray) vs. ART-C (teal)
+  Observed Type I Error Rate by
+  Condition Sample Size")
+
+# show plot p
+p
+```
+
+![](data_analysis_files/figure-markdown_github/unnamed-chunk-21-1.png)
+
+### Type I Error by Between or Within Subecjets
+
+Descriptive stats:
+
+ART-C
+
+``` r
+ddply(df_same_loc_no_cauchy, .(BW), summarize, mean = mean(ART_Con_Proportion_Sig), sd = sd(ART_Con_Proportion_Sig))
+```
+
+    ##                 BW       mean          sd
+    ## 1 Between Subjects 0.04878041 0.008506636
+    ## 2  Within Subjects 0.05099705 0.010091705
+
+T-test
+
+``` r
+ddply(df_same_loc_no_cauchy, .(BW), summarize, mean = mean(Param_Proportion_Sig), sd = sd(Param_Proportion_Sig))
+```
+
+    ##                 BW       mean         sd
+    ## 1 Between Subjects 0.04769404 0.01232468
+    ## 2  Within Subjects 0.04778515 0.01235608
+
+Now visualizing
+
+``` r
+# tick spacing
+breaks.x = seq(0.05,1,0.1)
+
+# labels are character versions of breaks
+labels.x = as.character(breaks.x)
+
+p =ggplot(df_same_loc_no_cauchy) +
+ geom_density( aes(x = Param_Proportion_Sig, y= ..count..), stat="binline", binwidth=.01, draw_baseline=FALSE, fill="azure4", color = NA, alpha=.6,
+               position = position_nudge(y=150)) +
+ geom_density( aes(x = ART_Con_Proportion_Sig, y= ..count..), stat="binline", binwidth=.01, draw_baseline=FALSE, fill=teal, color=NA) +
+theme+
+  theme(plot.title = element_text(size=12))+
+  # set x-axis label
+  xlab("Observed Type I Error Rate") +
+  # set y-axis label to nothing
+  ylab("") +
+  facet_wrap(~BW, nrow=1) +
+  #scale_x_continuous(breaks = breaks.x, label = labels.x, limits = c(0,.45)) +
+  labs(title = "T-test (gray) vs. ART-C (teal)
+  Observed Type I Error Rate by
+  Between or Within Subjects")
+
+# show plot p
+p
+```
+
+![](data_analysis_files/figure-markdown_github/unnamed-chunk-24-1.png)
+
+### Type I Error by Population Distribution
+
+We’ll include data drawn from a Cauchy distribution in this section and
+get a more clear picture of how it differs from all other distributions.
+
+Descriptive stats:
+
+ART-C
+
+``` r
+ddply(df_same_loc, .(Population_Distribution), summarize, mean = mean(ART_Con_Proportion_Sig), sd = sd(ART_Con_Proportion_Sig))
+```
+
+    ##   Population_Distribution       mean          sd
+    ## 1               Lognormal 0.05404593 0.015335095
+    ## 2                  Normal 0.04884978 0.008172849
+    ## 3             Exponential 0.05070027 0.007374186
+    ## 4                  Cauchy 0.13988917 0.153585610
+    ## 5                    t(3) 0.04893364 0.006285141
+    ## 6      Double Exponential 0.04913016 0.007072491
+
+T-test
+
+``` r
+ddply(df_same_loc_no_cauchy, .(Population_Distribution), summarize, mean = mean(Param_Proportion_Sig), sd = sd(Param_Proportion_Sig))
+```
+
+    ##   Population_Distribution       mean          sd
+    ## 1               Lognormal 0.04613381 0.008822362
+    ## 2                  Normal 0.04869729 0.008524247
+    ## 3             Exponential 0.04660686 0.007335898
+    ## 4                  Cauchy 0.04985299 0.028252652
+    ## 5                    t(3) 0.04691512 0.007054177
+    ## 6      Double Exponential 0.04883533 0.006891902
+
+Since data drawn from a Cauchy distribution results in much higher Type
+I error (and therefore needs a much larger x-axis), we’ll make two
+separate figures and visualize them side-by-side.
+
+``` r
+# tick spacing
+breaks.x = seq(0.05,1,0.1)
+
+# labels are character versions of breaks
+labels.x = as.character(breaks.x)
+
+p=ggplot(df_same_loc) +
+ geom_density( aes(x = Param_Proportion_Sig, y= ..count..), stat="binline", binwidth=.01, draw_baseline=FALSE, fill="azure4", color = NA, alpha=.6,
+               position = position_nudge(y=50)) +
+ geom_density( aes(x = ART_Con_Proportion_Sig, y= ..count..), stat="binline", binwidth=.01, draw_baseline=FALSE, fill=teal, color=NA) +
+theme+
+  # set x-axis label
+  xlab("Observed Type I Error Rate") +
+  # set y-axis label to nothing
+  ylab("") +
+  facet_wrap(~Population_Distribution, nrow=1) +
+  #scale_x_continuous(breaks = breaks.x, label = labels.x, limits = c(0,.45)) +
+  labs(title = "T-test (gray) vs. ART-C (teal) Observed Type I Error Rate by Population Distribution")
+
+# show plot p
+p
+```
+
+![](data_analysis_files/figure-markdown_github/unnamed-chunk-27-1.png)
+
+As expected, Type I error is similar among all Population Distributions
+except ART-C inflates Type I error when used to analyze data drawn from
+a Cauchy distribution.
+
+Power
+=====
 
 The last step in validating ART-C is to see if it has high statistical
 power. To recap, statistical power is the probability that a method will
@@ -586,6 +776,29 @@ All methods’ power increased with Condition Sample Size, but their
 relative differences remained the same, and ART-C always had the greater
 power than the other methods.
 
+Visualizing:
+
+``` r
+p = ggplot(df_diff_loc) +
+  geom_density( aes(x = Nonparam_Proportion_Sig, y= ..count..), stat="binline", binwidth=.01, draw_baseline=FALSE, fill="white",position = position_nudge(y=24))+
+ geom_density( aes(x = Param_Proportion_Sig, y= ..count..), stat="binline", binwidth=.01, draw_baseline=FALSE, fill="azure4", color=NA, alpha=.6, position = position_nudge(y = 13)) +
+   geom_density( aes(x = ART_Con_Proportion_Sig, y= ..count..), stat="binline", binwidth=.01, draw_baseline=FALSE, fill=teal,color=NA) +
+  theme +
+  theme(plot.title = element_text(color = "black",hjust=.5,size=20), 
+        axis.text.x = element_text(size=15), axis.title.x = element_text(size=18),
+        strip.text.x = element_text(size=18)) +
+  xlab("Observed Statistical Power") +
+  ylab("") +
+  facet_wrap(~Condition_Sample_Size, nrow=1)+
+  labs(title = "ART-C (teal) vs.
+  Mann-Whitney U Test / Wilcoxon Signed Rank Test (black outline) vs.
+  T-test (gray) Observed Staistical Power by Condition Sample Size")
+
+p
+```
+
+![](data_analysis_files/figure-markdown_github/unnamed-chunk-32-1.png)
+
 ### Power by Population Distribution
 
 The other design property that had an impact on power was Population
@@ -651,10 +864,13 @@ p = ggplot(df_diff_loc) +
  geom_density( aes(x = Param_Proportion_Sig, y= ..count..), stat="binline", binwidth=.01, draw_baseline=FALSE, fill="azure4", color=NA, alpha=.6, position = position_nudge(y = 20)) +
    geom_density( aes(x = ART_Con_Proportion_Sig, y= ..count..), stat="binline", binwidth=.01, draw_baseline=FALSE, fill=teal,color=NA) +
   theme+
+  theme(plot.title = element_text(color = "black",hjust=.5,size=20), 
+      axis.text.x = element_text(size=15), axis.title.x = element_text(size=18),
+      strip.text.x = element_text(size=18)) +
   xlab("Observed Statistical Power") +
   ylab("") +
   scale_x_continuous(breaks = breaks.x, label = labels.x, limits = c(breaks.x[[1]],    breaks.x[length(breaks.x)])) +
-  facet_wrap(~Population_Distribution, ncol=2)+
+  facet_wrap(~Population_Distribution, ncol=3)+
   labs(title = "ART-C (teal) vs.
   Mann-Whitney U Test / Wilcoxon Signed Rank Test (black outline) vs.
   T-test (gray) Observed Staistical Power by Population Distribution")
@@ -662,12 +878,203 @@ p = ggplot(df_diff_loc) +
 p
 ```
 
-![](data_analysis_files/figure-gfm/Power%20by%20Population%20Distribution,%20no%20Cauchy-1.png)<!-- -->
+![](data_analysis_files/figure-markdown_github/Power%20by%20Population%20Distribution,%20no%20Cauchy-1.png)
 
 ART-C had greater power than a *t*-test for all non-normal distributions
 (to be expected since the *t*-test is meant for normal distributions)
 and greater power than Mann-Whitney *U* test / Wilcoxon signed rank test
 for all distributions.
+
+Those are the most important results and the ones we included in our
+paper, but we can look at how the other properties impacted power, too.
+
+### Power by Layout
+
+Some descriptive stats:
+
+ART-C
+
+``` r
+# descriptive statistics broken down by distribution type - ART-C
+ddply(df_diff_loc, .(Layout), summarize, mean = mean(ART_Con_Proportion_Sig), sd = sd(ART_Con_Proportion_Sig))
+```
+
+    ##   Layout      mean        sd
+    ## 1    2x2 0.5783662 0.1559152
+    ## 2    3x3 0.6088640 0.1297097
+    ## 3  2x2x2 0.6041308 0.1426348
+
+*T*-test
+
+``` r
+# descriptive statistics broken down by distribution type - t-test
+ddply(df_diff_loc, .(Layout), summarize, mean = mean(Param_Proportion_Sig), sd = sd(Param_Proportion_Sig))
+```
+
+    ##   Layout      mean        sd
+    ## 1    2x2 0.4715979 0.2115065
+    ## 2    3x3 0.4549774 0.2048659
+    ## 3  2x2x2 0.4612510 0.2083735
+
+Mann-Whitney *U* Test / Wilcoxon Signed Rank Test
+
+``` r
+# descriptive statistics broken down by distribution type - nonparam
+ddply(df_diff_loc, .(Layout), summarize, mean = mean(Nonparam_Proportion_Sig), sd = sd(Nonparam_Proportion_Sig))
+```
+
+    ##   Layout      mean        sd
+    ## 1    2x2 0.5278437 0.1516542
+    ## 2    3x3 0.5253806 0.1503611
+    ## 3  2x2x2 0.5170238 0.1439876
+
+Visualizing:
+
+``` r
+p = ggplot(df_diff_loc) +
+  geom_density( aes(x = Nonparam_Proportion_Sig, y= ..count..), stat="binline", binwidth=.01, draw_baseline=FALSE, fill="white",position = position_nudge(y=24))+
+ geom_density( aes(x = Param_Proportion_Sig, y= ..count..), stat="binline", binwidth=.01, draw_baseline=FALSE, fill="azure4", color=NA, alpha=.6, position = position_nudge(y = 13)) +
+   geom_density( aes(x = ART_Con_Proportion_Sig, y= ..count..), stat="binline", binwidth=.01, draw_baseline=FALSE, fill=teal,color=NA) +
+  theme +
+  theme(plot.title = element_text(color = "black",hjust=.5,size=20), 
+        axis.text.x = element_text(size=15), axis.title.x = element_text(size=18),
+        strip.text.x = element_text(size=18)) +
+  xlab("Observed Statistical Power") +
+  ylab("") +
+  #scale_x_continuous(breaks = breaks.x, label = labels.x, limits = c(breaks.x[[1]],    breaks.x[length(breaks.x)])) +
+  facet_wrap(~Layout, nrow=1)+
+  labs(title = "ART-C (teal) vs.
+  Mann-Whitney U Test / Wilcoxon Signed Rank Test (black outline) vs.
+  T-test (gray) Observed Staistical Power by Layout")
+
+p
+```
+
+![](data_analysis_files/figure-markdown_github/unnamed-chunk-39-1.png)
+
+### Power by Between or Within Subjects
+
+Some descriptive stats:
+
+ART-C
+
+``` r
+# descriptive statistics broken down by distribution type - ART-C
+ddply(df_diff_loc, .(BW), summarize, mean = mean(ART_Con_Proportion_Sig), sd = sd(ART_Con_Proportion_Sig))
+```
+
+    ##                 BW      mean        sd
+    ## 1 Between Subjects 0.6027286 0.1425443
+    ## 2  Within Subjects 0.5935151 0.1442401
+
+*T*-test
+
+``` r
+# descriptive statistics broken down by distribution type - t-test
+ddply(df_diff_loc, .(BW), summarize, mean = mean(Param_Proportion_Sig), sd = sd(Param_Proportion_Sig))
+```
+
+    ##                 BW      mean        sd
+    ## 1 Between Subjects 0.4709494 0.2102342
+    ## 2  Within Subjects 0.4538802 0.2056490
+
+Mann-Whitney *U* Test / Wilcoxon Signed Rank Test
+
+``` r
+# descriptive statistics broken down by distribution type - nonparam
+ddply(df_diff_loc, .(BW), summarize, mean = mean(Nonparam_Proportion_Sig), sd = sd(Nonparam_Proportion_Sig))
+```
+
+    ##                 BW      mean        sd
+    ## 1 Between Subjects 0.5418394 0.1357906
+    ## 2  Within Subjects 0.5031662 0.1567829
+
+Visualizing:
+
+``` r
+p = ggplot(df_diff_loc) +
+  geom_density( aes(x = Nonparam_Proportion_Sig, y= ..count..), stat="binline", binwidth=.01, draw_baseline=FALSE, fill="white",position = position_nudge(y=30))+
+ geom_density( aes(x = Param_Proportion_Sig, y= ..count..), stat="binline", binwidth=.01, draw_baseline=FALSE, fill="azure4", color=NA, alpha=.6, position = position_nudge(y = 14)) +
+   geom_density( aes(x = ART_Con_Proportion_Sig, y= ..count..), stat="binline", binwidth=.01, draw_baseline=FALSE, fill=teal,color=NA) +
+  theme +
+  theme(axis.title.x = element_text(size=12),
+        strip.text.x = element_text(size=12)) +
+  xlab("Observed Statistical Power") +
+  ylab("") +
+  #scale_x_continuous(breaks = breaks.x, label = labels.x, limits = c(breaks.x[[1]],    breaks.x[length(breaks.x)])) +
+  facet_wrap(~BW, nrow=1)+
+  labs(title = "ART-C (teal) vs.
+  Mann-Whitney U Test / Wilcoxon Signed Rank Test (black outline) vs.
+  T-test (gray) Observed Staistical Power by Between or Within Subjects")
+
+p
+```
+
+![](data_analysis_files/figure-markdown_github/unnamed-chunk-43-1.png)
+
+### Power by Contrast Size
+
+Some descriptive stats:
+
+ART-C
+
+``` r
+# descriptive statistics broken down by distribution type - ART-C
+ddply(df_diff_loc, .(Contrast_Size), summarize, mean = mean(ART_Con_Proportion_Sig), sd = sd(ART_Con_Proportion_Sig))
+```
+
+    ##        Contrast_Size      mean        sd
+    ## 1 1-Factor Contrasts 0.6162018 0.1471774
+    ## 2 2-Factor Contrasts 0.5829068 0.1416638
+    ## 3 3-Factor Contrasts 0.5895269 0.1320799
+
+*T*-test
+
+``` r
+# descriptive statistics broken down by distribution type - t-test
+ddply(df_diff_loc, .(Contrast_Size), summarize, mean = mean(Param_Proportion_Sig), sd = sd(Param_Proportion_Sig))
+```
+
+    ##        Contrast_Size      mean        sd
+    ## 1 1-Factor Contrasts 0.4784241 0.2165214
+    ## 2 2-Factor Contrasts 0.4533488 0.2024922
+    ## 3 3-Factor Contrasts 0.4415848 0.1969550
+
+Mann-Whitney *U* Test / Wilcoxon Signed Rank Test
+
+``` r
+# descriptive statistics broken down by distribution type - nonparam
+ddply(df_diff_loc, .(Contrast_Size), summarize, mean = mean(Nonparam_Proportion_Sig), sd = sd(Nonparam_Proportion_Sig))
+```
+
+    ##        Contrast_Size      mean        sd
+    ## 1 1-Factor Contrasts 0.4958053 0.1378273
+    ## 2 2-Factor Contrasts 0.5382353 0.1511952
+    ## 3 3-Factor Contrasts 0.5553981 0.1550372
+
+Visualizing:
+
+``` r
+p = ggplot(df_diff_loc) +
+  geom_density( aes(x = Nonparam_Proportion_Sig, y= ..count..), stat="binline", binwidth=.01, draw_baseline=FALSE, fill="white",position = position_nudge(y=30))+
+ geom_density( aes(x = Param_Proportion_Sig, y= ..count..), stat="binline", binwidth=.01, draw_baseline=FALSE, fill="azure4", color=NA, alpha=.6, position = position_nudge(y = 14)) +
+   geom_density( aes(x = ART_Con_Proportion_Sig, y= ..count..), stat="binline", binwidth=.01, draw_baseline=FALSE, fill=teal,color=NA) +
+  theme +
+  theme(plot.title = element_text(color = "black",hjust=.5,size=14), 
+        axis.text.x = element_text(size=10), axis.title.x = element_text(size=12),
+        strip.text.x = element_text(size=12)) +
+  xlab("Observed Statistical Power") +
+  ylab("") +
+  #scale_x_continuous(breaks = breaks.x, label = labels.x, limits = c(breaks.x[[1]],    breaks.x[length(breaks.x)])) +
+  facet_wrap(~Contrast_Size, nrow=1)+
+  labs(title = "ART-C (teal) vs.
+  Mann-Whitney U Test / Wilcoxon Signed Rank Test (black outline) vs.
+  T-test (gray) Observed Staistical Power by Contrast Size")
+
+p
+```
+
+![](data_analysis_files/figure-markdown_github/unnamed-chunk-47-1.png)
 
 To summarize: When used to conduct multifactor contrasts, ART-C does not
 inflate Type I error rate (as oppose to the original ART) and has
